@@ -24,6 +24,8 @@
   },
   "homepage": "https://github.com/nishanc/audio-visualization#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "play-sound": "^1.1.3",
+    "socket.io": "^2.3.0"
   }
 }

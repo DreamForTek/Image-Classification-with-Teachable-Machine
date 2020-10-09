@@ -1,14 +1,19 @@
+// Tensorflow demo
+
+//Detector de orientação sexual
+
 let video;
 let classifier;
 let modelURL = './model/';
 let label = "waiting...";
-
+var socket;
 // STEP 1: Load the model!
 function preload() {
   classifier = ml5.imageClassifier(modelURL + 'model.json');
 }
 
 function setup() {
+  socket = io();
   createCanvas(640, 520);
   // Create the video
   video = createCapture(VIDEO);
@@ -36,6 +41,11 @@ function draw() {
   text(label, width / 2, height - 16);
 }
 
+var boiola = document.getElementById("boiola");
+
+var macho = document.getElementById("macho");
+var lastlabel=""
+
 
 // STEP 3: Get the classification!
 function gotResults(error, results) {
@@ -46,6 +56,30 @@ function gotResults(error, results) {
   }
   // Store the label and classify again!
   label = results[0].label;
+  if(lastlabel!=label){
+    
+    lastlabel=label
+
+    if(lastlabel=="rui"){
+      boiola.pause();
+      boiola.currentTime = 0
+      macho.currentTime = 0
+      macho.play();
+    }
+    
+    if(lastlabel=="juca"){
+      macho.pause();
+      macho.currentTime = 0
+      boiola.currentTime = 0
+      boiola.play();
+
+    }
+ 
+   
+    socket.emit('label', label);
+    
+  }
+
   console.log(results);
   classifyVideo();
 }
